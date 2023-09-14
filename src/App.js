@@ -1,13 +1,8 @@
 import './App.css';
-import BouquetsPage from './bouquets/bouquetsPage';
-
-
+import BouquetsPage from './pages/Bouquets/BouquetsPage';
 
 function App() {
-
-  return (
-    <BouquetsPage />      
-  );
+  return <BouquetsPage />;
 }
 
 export default App;
