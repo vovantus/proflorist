@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/proflorist/static/css/main.92f199fc.css",
-    "main.js": "/proflorist/static/js/main.8597801b.js",
+    "main.js": "/proflorist/static/js/main.dee72080.js",
     "static/js/787.a7ab98df.chunk.js": "/proflorist/static/js/787.a7ab98df.chunk.js",
     "static/media/roboto-latin-500-normal.woff2": "/proflorist/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
     "static/media/roboto-latin-700-normal.woff2": "/proflorist/static/media/roboto-latin-700-normal.227c93190fe7f82de3f8.woff2",
@@ -61,11 +61,11 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/proflorist/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/proflorist/index.html",
     "main.92f199fc.css.map": "/proflorist/static/css/main.92f199fc.css.map",
-    "main.8597801b.js.map": "/proflorist/static/js/main.8597801b.js.map",
+    "main.dee72080.js.map": "/proflorist/static/js/main.dee72080.js.map",
     "787.a7ab98df.chunk.js.map": "/proflorist/static/js/787.a7ab98df.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.92f199fc.css",
-    "static/js/main.8597801b.js"
+    "static/js/main.dee72080.js"
   ]
 }
