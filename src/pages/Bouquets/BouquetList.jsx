@@ -1,4 +1,4 @@
-import MediaCard from '../../UIElments/MediaCard';
+import MediaCard from '../../components/MediaCard';
 import { Grid } from '@mui/material';
 
 export default function BouquetList({ bouquets }) {
@@ -17,5 +17,9 @@ export default function BouquetList({ bouquets }) {
     );
   });
 
-  return bouquetList.length > 0 ? <>{bouquetList}</> : <h5>Нет букетов</h5>;
+  return bouquetList.length > 0 ? (
+    <>{bouquetList}</>
+  ) : (
+    <h5>No bouquets to show</h5>
+  );
 }

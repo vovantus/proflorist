@@ -1,7 +1,7 @@
 import { Server } from '../utils/config';
 import { Client, Databases } from 'appwrite';
 
-let api = {
+const api = {
   sdk: null,
 
   provider: () => {
@@ -50,6 +50,18 @@ let api = {
       .catch((error) => {
         console.error('Error listing documents: ', error);
       });
+  },
+
+  fetchBouquets: async () => {
+    try {
+      const data = await api.listDocuments(
+        Server.databaseID,
+        Server.collectionID,
+      );
+      return data.documents;
+    } catch (e) {
+      console.log('error', e);
+    }
   },
 };
 
