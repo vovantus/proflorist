@@ -14,11 +14,11 @@ function Price({ price }) {
 export default function MediaCard({ imageUrl, header, text, price, display }) {
   return (
     <Card
-      sx={{ height: 500, width: 300 }}
+      sx={{ height: 500, width: 280 }}
       className={display ? '' : 'hiddenCard'}
     >
       <CardMedia
-        sx={{ height: 300, width: 300 }}
+        sx={{ height: 300, width: 280 }}
         image={imageUrl}
         title={header}
       />

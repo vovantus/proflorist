@@ -1,4 +1,4 @@
-export function getMinMaxPrices(bouquets) {
+export function getMinMaxBouquetPrices(bouquets) {
   return bouquets.reduce(
     (acc, bouquet) => [
       Math.min(acc[0], bouquet.Price),
@@ -8,11 +8,11 @@ export function getMinMaxPrices(bouquets) {
   );
 }
 
-export function toggleDirection(direction) {
+export function toggleSortDirection(direction) {
   return direction === 'asc' ? 'desc' : 'asc';
 }
 
-export function compare(a, b, field, direction) {
+export function compareBouquets(a, b, field, direction) {
   const comparison = a[field] > b[field] ? 1 : -1;
   return direction === 'asc' ? comparison : -comparison;
 }

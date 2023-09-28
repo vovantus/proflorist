@@ -1,43 +1,27 @@
 import { useState, useEffect } from 'react';
-import SortingBar from './SortingBar';
-import FilterBar from './FilterBar';
-import Loading from '../../components/Loading';
+import { toggleSortDirection, compareBouquets } from '../../utils/utils.js';
+import { useGetBouquets } from '../../hooks';
 import { Grid, Container } from '@mui/material';
-import api from '../../api/api';
+import SortingBar from './SortingBar';
+import FilterBar from '../../components/FilterBar';
+import Loading from '../../components/Loading';
+import SearchBar from '../../components/SearchBar';
 import BouquetList from './BouquetList';
-import { compare, getMinMaxPrices, toggleDirection } from './utils/utils.js';
 
 export default function BouquetsPage() {
   const [sorting, setSorting] = useState({ field: 'Name', direction: 'asc' });
-  const [bouquets, setBouquets] = useState([]);
-  const [priceFilterRange, setPriceFilterRange] = useState([0, 0]);
   const [priceFilterSelection, setPriceFilterSelection] = useState([0, 0]);
-  const [isLoading, setIsLoading] = useState('loading');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const { bouquets, isLoading, priceFilterRange } = useGetBouquets();
 
   useEffect(() => {
-    api
-      .fetchBouquets()
-      .then((bouqs) => {
-        const filterInitial = getMinMaxPrices(bouqs);
-        console.log(filterInitial);
-        setPriceFilterRange(filterInitial);
-        setPriceFilterSelection(filterInitial);
-        setBouquets(bouqs);
-        setIsLoading('loaded');
-      })
-      .catch((e) => {
-        console.log(e);
-        setIsLoading('error');
-      });
-  }, []);
+    setPriceFilterSelection(priceFilterRange);
+  }, [priceFilterRange]);
 
   function updateSorting(field) {
     const direction =
-      sorting.field !== field ? 'asc' : toggleDirection(sorting.direction);
-    const sortedBouqs = bouquets
-      .slice()
-      .sort((a, b) => compare(a, b, field, direction));
-    setBouquets(sortedBouqs);
+      sorting.field !== field ? 'asc' : toggleSortDirection(sorting.direction);
     setSorting({ field: field, direction: direction });
   }
 
@@ -45,24 +29,45 @@ export default function BouquetsPage() {
     setPriceFilterSelection(priceRange);
   }
 
-  const filteredBouquets = bouquets.filter(
-    (b) =>
-      b.Price >= priceFilterSelection[0] && b.Price <= priceFilterSelection[1],
-  );
+  function updateSearchTerm(newTerm) {
+    setSearchTerm(newTerm);
+  }
+
+  let filteredAndSortedBouquets = bouquets
+    .filter(
+      (b) =>
+        b.Price >= priceFilterSelection[0] &&
+        b.Price <= priceFilterSelection[1],
+    )
+    .sort((a, b) => compareBouquets(a, b, sorting.field, sorting.direction));
+
+  if (searchTerm !== '') {
+    filteredAndSortedBouquets = filteredAndSortedBouquets.filter((b) =>
+      b.Name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }
 
   return (
     <Container maxWidth="lg">
-      <SortingBar updateSorting={updateSorting} />
-      <FilterBar
-        filterRanges={priceFilterRange}
-        filterSelection={priceFilterSelection}
-        filterUpdater={priceFilterUpdater}
-      />
+      <Grid container spacing={2} justifyContent="space-between">
+        {/* Left Column */}
+        <Grid item>
+          <SortingBar updateSorting={updateSorting} />
+          <FilterBar
+            filterRanges={priceFilterRange}
+            filterSelection={priceFilterSelection}
+            filterUpdater={priceFilterUpdater}
+          />
+        </Grid>
+        <Grid item sx={{ paddingRight: '30px' }}>
+          <SearchBar updateSearchTerm={updateSearchTerm} />
+        </Grid>
+      </Grid>
       <Grid container spacing={1}>
         {isLoading !== 'loaded' ? (
           <Loading loaderState={isLoading} />
         ) : (
-          <BouquetList bouquets={filteredBouquets} />
+          <BouquetList bouquets={filteredAndSortedBouquets} />
         )}
       </Grid>
     </Container>
