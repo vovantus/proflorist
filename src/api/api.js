@@ -19,6 +19,12 @@ const api = {
     return api.provider().databases.listDocuments(databaseId, collectionID);
   },
 
+  getDocument: (databaseId, collectionID, documentId) => {
+    return api
+      .provider()
+      .databases.getDocument(databaseId, collectionID, documentId);
+  },
+
   updateEmptyFields: (databaseId, collectionID, fieldName) => {
     api
       .listDocuments(databaseId, collectionID)
@@ -59,6 +65,20 @@ const api = {
         Server.collectionID,
       );
       return data.documents;
+    } catch (e) {
+      console.log('error', e);
+    }
+  },
+
+  fetchBouquetInfo: async (bouquetID) => {
+    try {
+      const data = await api.getDocument(
+        Server.databaseID,
+        Server.collectionID,
+        bouquetID,
+      );
+      console.log(data);
+      return data;
     } catch (e) {
       console.log('error', e);
     }

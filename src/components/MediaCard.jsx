@@ -4,6 +4,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
 function Price({ price }) {
   if (price) {
@@ -11,7 +13,14 @@ function Price({ price }) {
   }
 }
 
-export default function MediaCard({ imageUrl, header, text, price, display }) {
+export default function MediaCard({
+  imageUrl,
+  header,
+  text,
+  price,
+  display,
+  link,
+}) {
   return (
     <Card
       sx={{ height: 500, width: 280 }}
@@ -24,7 +33,18 @@ export default function MediaCard({ imageUrl, header, text, price, display }) {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {header}
+          {link != '' ? (
+            <Link
+              component={RouterLink}
+              to={link}
+              color="black"
+              underline="hover"
+            >
+              {header}
+            </Link>
+          ) : (
+            header
+          )}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {text ? text : 'No description provided'}

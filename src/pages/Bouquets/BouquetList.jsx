@@ -12,6 +12,7 @@ export default function BouquetList({ bouquets }) {
           date={bouq.$createdAt}
           text={bouq.Description}
           display={true}
+          link={'/proflorist/bouquet/' + bouq.$id}
         />
       </Grid>
     );
