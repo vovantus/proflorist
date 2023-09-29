@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useBouquetInfo } from '../../hooks';
+import { useBouquetInfo } from '../../hooks/useBouquetInfo';
 import MediaCard from '../../components/MediaCard';
 import Loading from '../../components/Loading';
 import { Grid, Container } from '@mui/material';

@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
-import { toggleSortDirection, compareBouquets } from '../../utils/utils.js';
-import { useGetBouquets } from '../../hooks';
+import { useState, useMemo, useEffect } from 'react';
+import {
+  toggleSortDirection,
+  compareBouquets,
+  getMinMaxBouquetPrices,
+} from '../../utils/utils.js';
+import { useGetBouquets } from '../../hooks/useGetBouquets';
 import { Grid, Container } from '@mui/material';
 import SortingBar from './SortingBar';
 import FilterBar from '../../components/FilterBar';
@@ -9,15 +13,39 @@ import SearchBar from '../../components/SearchBar';
 import BouquetList from './BouquetList';
 
 export default function BouquetsPage() {
-  const [sorting, setSorting] = useState({ field: 'Name', direction: 'asc' });
-  const [priceFilterSelection, setPriceFilterSelection] = useState([0, 0]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const { bouquets, isLoading } = useGetBouquets();
 
-  const { bouquets, isLoading, priceFilterRange } = useGetBouquets();
+  const priceFilterRange = useMemo(() => {
+    const filterInitial = getMinMaxBouquetPrices(bouquets);
+    return [filterInitial[0] - 1, filterInitial[1] + 1];
+  }, [bouquets]);
+
+  const [priceFilterSelection, setPriceFilterSelection] = useState([0, 0]);
+  const [sorting, setSorting] = useState({ field: 'Name', direction: 'asc' });
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setPriceFilterSelection(priceFilterRange);
   }, [priceFilterRange]);
+
+  const sortedBouquets = useMemo(() => {
+    const sorted = bouquets.sort((a, b) =>
+      compareBouquets(a, b, sorting.field, sorting.direction),
+    );
+    return [...sorted]; // без этого не обновляет filteredBouquets
+  }, [bouquets, sorting]);
+
+  const filteredBouquets = useMemo(
+    () =>
+      sortedBouquets.filter(
+        (b) =>
+          b.Price >= priceFilterSelection[0] &&
+          b.Price <= priceFilterSelection[1] &&
+          (!searchTerm ||
+            b.Name.toLowerCase().includes(searchTerm.trim().toLowerCase())),
+      ),
+    [sortedBouquets, searchTerm, priceFilterSelection],
+  );
 
   function updateSorting(field) {
     const direction =
@@ -33,24 +61,9 @@ export default function BouquetsPage() {
     setSearchTerm(newTerm);
   }
 
-  let filteredAndSortedBouquets = bouquets
-    .filter(
-      (b) =>
-        b.Price >= priceFilterSelection[0] &&
-        b.Price <= priceFilterSelection[1],
-    )
-    .sort((a, b) => compareBouquets(a, b, sorting.field, sorting.direction));
-
-  if (searchTerm !== '') {
-    filteredAndSortedBouquets = filteredAndSortedBouquets.filter((b) =>
-      b.Name.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-  }
-
   return (
     <Container maxWidth="lg">
       <Grid container spacing={2} justifyContent="space-between">
-        {/* Left Column */}
         <Grid item>
           <SortingBar updateSorting={updateSorting} />
           <FilterBar
@@ -67,7 +80,7 @@ export default function BouquetsPage() {
         {isLoading !== 'loaded' ? (
           <Loading loaderState={isLoading} />
         ) : (
-          <BouquetList bouquets={filteredAndSortedBouquets} />
+          <BouquetList bouquets={filteredBouquets} />
         )}
       </Grid>
     </Container>
