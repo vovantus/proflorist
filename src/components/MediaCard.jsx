@@ -23,17 +23,19 @@ export default function MediaCard({
 }) {
   return (
     <Card
-      sx={{ height: 500, width: 280 }}
+      sx={{ height: 450, width: 260, position: 'relative' }}
       className={display ? '' : 'hiddenCard'}
     >
       <CardMedia
-        sx={{ height: 300, width: 280 }}
+        sx={{
+          paddingTop: '100%', // 1:1 aspect ratio (for 260x260)
+        }}
         image={imageUrl}
         title={header}
       />
-      <CardContent>
+      <CardContent style={{ flex: '1' }}>
         <Typography gutterBottom variant="h5" component="div">
-          {link != '' ? (
+          {link ? (
             <Link
               component={RouterLink}
               to={link}
@@ -51,7 +53,9 @@ export default function MediaCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Price price={price} />
+        <div style={{ position: 'absolute', bottom: '8px', left: '8px' }}>
+          <Price price={price} />
+        </div>
       </CardActions>
     </Card>
   );

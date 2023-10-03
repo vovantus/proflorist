@@ -9,12 +9,18 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { BrowserRouter } from 'react-router-dom';
+import { AppBarProvider } from './contexts/AppBarContext';
+import AppWrapper from './components/AppWrapper';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <AppBarProvider>
+        <AppWrapper>
+          <App />
+        </AppWrapper>
+      </AppBarProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

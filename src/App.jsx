@@ -1,15 +1,24 @@
 import './App.css';
 import BouquetsPage from './pages/Bouquets/BouquetsPage';
 import ViewBouquet from './pages/ViewBouquet/ViewBouquet';
+import Error404 from './pages/NotFound/404';
+import EditBouquet from './pages/EditBouquet/EditBouquet';
+
 import { Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
 
 function App() {
-  //return <BouquetsPage />;
   return (
-    <Routes>
-      <Route path="/proflorist" element={<BouquetsPage />} />
-      <Route path="/proflorist/bouquet/:id" element={<ViewBouquet />} />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path="/proflorist">
+          <Route index element={<BouquetsPage />} />
+          <Route path="bouquet/:id" element={<ViewBouquet />} />
+          <Route path="bouquet/edit" element={<EditBouquet />} />
+        </Route>
+        <Route path="*" element={<Error404 />} />
+      </Routes>
+    </Layout>
   );
 }
 

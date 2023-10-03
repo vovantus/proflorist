@@ -1,11 +1,15 @@
 export function getMinMaxBouquetPrices(bouquets) {
-  return bouquets.reduce(
-    (acc, bouquet) => [
-      Math.min(acc[0], bouquet.Price),
-      Math.max(acc[1], bouquet.Price),
-    ],
-    [Infinity, -Infinity],
-  );
+  if (bouquets.length > 0) {
+    return bouquets.reduce(
+      (acc, bouquet) => [
+        Math.min(acc[0], bouquet.Price),
+        Math.max(acc[1], bouquet.Price),
+      ],
+      [Infinity, -Infinity],
+    );
+  } else {
+    return [0, 0];
+  }
 }
 
 export function toggleSortDirection(direction) {

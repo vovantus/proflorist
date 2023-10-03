@@ -1,8 +1,8 @@
 export default function Loading({ loaderState }) {
-  let text = 'Loading...';
+  let text =
+    loaderState === 'error'
+      ? 'Error while loading. Try again later.'
+      : 'Loading...';
 
-  if (loaderState === 'error') {
-    text = 'Error while loading. Try again later.';
-  }
   return <h2>{text}</h2>;
 }

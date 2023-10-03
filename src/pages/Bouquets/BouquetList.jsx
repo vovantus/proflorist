@@ -1,15 +1,14 @@
-import MediaCard from '../../components/MediaCard';
+import BouquetCard from '../../components/BouquetCard';
 import { Grid } from '@mui/material';
 
 export default function BouquetList({ bouquets }) {
   const bouquetList = bouquets.map((bouq) => (
     <Grid item key={bouq.Name}>
-      <MediaCard
+      <BouquetCard
         imageUrl={bouq.ImageUrl}
         header={bouq.Name}
         price={bouq.Price}
         date={bouq.$createdAt}
-        text={bouq.Description}
         display={true}
         link={'/proflorist/bouquet/' + bouq.$id}
       />

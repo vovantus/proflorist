@@ -16,8 +16,12 @@ export default function BouquetsPage() {
   const { bouquets, isLoading } = useGetBouquets();
 
   const priceFilterRange = useMemo(() => {
-    const filterInitial = getMinMaxBouquetPrices(bouquets);
-    return [filterInitial[0] - 1, filterInitial[1] + 1];
+    if (bouquets.length == 0) {
+      return [0, 0];
+    } else {
+      const filterInitial = getMinMaxBouquetPrices(bouquets);
+      return [filterInitial[0] - 1, filterInitial[1] + 1];
+    }
   }, [bouquets]);
 
   const [priceFilterSelection, setPriceFilterSelection] = useState([0, 0]);
@@ -72,15 +76,15 @@ export default function BouquetsPage() {
             filterUpdater={priceFilterUpdater}
           />
         </Grid>
-        <Grid item sx={{ paddingRight: '30px' }}>
+        <Grid item sx={{ padding: '30px 10px 10px 10px' }}>
           <SearchBar updateSearchTerm={updateSearchTerm} />
         </Grid>
       </Grid>
       <Grid container spacing={1}>
-        {isLoading !== 'loaded' ? (
-          <Loading loaderState={isLoading} />
-        ) : (
+        {isLoading === 'loaded' ? (
           <BouquetList bouquets={filteredBouquets} />
+        ) : (
+          <Loading loaderState={isLoading} />
         )}
       </Grid>
     </Container>
