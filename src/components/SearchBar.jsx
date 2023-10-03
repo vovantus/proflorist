@@ -10,7 +10,7 @@ export default function SearchBar({ updateSearchTerm }) {
       type="search"
       onChange={(e) => updateSearchTerm(e.target.value)}
       fullWidth
-      sx={{ marginTop: '30px' }}
+      sx={{ marginTop: '20px' }}
     />
   );
 }

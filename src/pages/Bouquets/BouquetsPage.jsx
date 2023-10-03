@@ -5,7 +5,7 @@ import {
   getMinMaxBouquetPrices,
 } from '../../utils/utils.js';
 import { useGetBouquets } from '../../hooks/useGetBouquets';
-import { Grid, Container } from '@mui/material';
+import { Grid } from '@mui/material';
 import SortingBar from './SortingBar';
 import FilterBar from '../../components/FilterBar';
 import Loading from '../../components/Loading';
@@ -66,27 +66,34 @@ export default function BouquetsPage() {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Grid container spacing={2} justifyContent="space-between">
-        <Grid item>
-          <SortingBar updateSorting={updateSorting} />
-          <FilterBar
-            filterRanges={priceFilterRange}
-            filterSelection={priceFilterSelection}
-            filterUpdater={priceFilterUpdater}
-          />
-        </Grid>
-        <Grid item sx={{ padding: '30px 10px 10px 10px' }}>
-          <SearchBar updateSearchTerm={updateSearchTerm} />
-        </Grid>
+    <>
+      {/* Sorting Bar */}
+      <Grid item xs={12} sm={6} md={4}>
+        <SortingBar updateSorting={updateSorting} />
       </Grid>
-      <Grid container spacing={1}>
+
+      {/* Filter Bar */}
+      <Grid item xs={12} sm={6} md={4}>
+        <FilterBar
+          filterRanges={priceFilterRange}
+          filterSelection={priceFilterSelection}
+          filterUpdater={priceFilterUpdater}
+        />
+      </Grid>
+
+      {/* Search Bar */}
+      <Grid item xs={12} sm={12} md={4}>
+        <SearchBar updateSearchTerm={updateSearchTerm} />
+      </Grid>
+
+      {/* Bouquet List */}
+      <Grid item xs={12}>
         {isLoading === 'loaded' ? (
           <BouquetList bouquets={filteredBouquets} />
         ) : (
           <Loading loaderState={isLoading} />
         )}
       </Grid>
-    </Container>
+    </>
   );
 }

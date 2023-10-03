@@ -5,17 +5,10 @@ function Layout({ children }) {
   return (
     <div>
       <AppHeader />
-      <div className="content">
-        <Grid container>
-          <Grid item xs={1}>
-            {' '}
-            {/* Sidebar */}
-          </Grid>
-          <Grid item xs={10}>
-            {' '}
-            {/* Main content */}
-            {children}
-          </Grid>
+      <div className="content" style={{ margin: '20px 20px 20px 70px' }}>
+        <Grid container spacing={2}>
+          {/* Main content */}
+          {children}
         </Grid>
       </div>
     </div>
