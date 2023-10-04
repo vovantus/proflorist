@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 export default function BouquetList({ bouquets }) {
   const bouquetList = bouquets.map((bouq) => (
     <BouquetCard
-      key={bouq.Name}
+      key={bouq.$id}
       imageUrl={bouq.ImageUrl}
       header={bouq.Name}
       price={bouq.Price}

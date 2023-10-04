@@ -25,6 +25,12 @@ const api = {
       .databases.getDocument(databaseId, collectionID, documentId);
   },
 
+  createDocument: (databaseId, collectionId, data) => {
+    return api
+      .provider()
+      .databases.createDocument(databaseId, collectionId, 'unique()', data);
+  },
+
   updateEmptyFields: (databaseId, collectionID, fieldName) => {
     api
       .listDocuments(databaseId, collectionID)
@@ -81,6 +87,23 @@ const api = {
       return data;
     } catch (e) {
       console.log('error', e);
+      throw e;
+    }
+  },
+
+  createBouquet: async (bouquet) => {
+    try {
+      console.log('create call');
+      const data = await api.createDocument(
+        Server.databaseID,
+        Server.collectionID,
+        bouquet,
+      );
+      return data;
+    } catch (e) {
+      console.error('Error in adding bouquet');
+      console.log('error', e);
+      throw e;
     }
   },
 };

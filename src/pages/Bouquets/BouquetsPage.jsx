@@ -11,6 +11,7 @@ import FilterBar from '../../components/FilterBar';
 import Loading from '../../components/Loading';
 import SearchBar from '../../components/SearchBar';
 import BouquetList from './BouquetList';
+import CreateBouquetButton from '../../components/CreateBouquetButton.jsx';
 
 export default function BouquetsPage() {
   const { bouquets, isLoading } = useGetBouquets();
@@ -68,12 +69,12 @@ export default function BouquetsPage() {
   return (
     <>
       {/* Sorting Bar */}
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <SortingBar updateSorting={updateSorting} />
       </Grid>
 
       {/* Filter Bar */}
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <FilterBar
           filterRanges={priceFilterRange}
           filterSelection={priceFilterSelection}
@@ -82,8 +83,13 @@ export default function BouquetsPage() {
       </Grid>
 
       {/* Search Bar */}
-      <Grid item xs={12} sm={12} md={4}>
+      <Grid item xs={8} sm={6} md={3}>
         <SearchBar updateSearchTerm={updateSearchTerm} />
+      </Grid>
+
+      {/* Create bouquet */}
+      <Grid item xs={4} sm={6} md={3}>
+        <CreateBouquetButton />
       </Grid>
 
       {/* Bouquet List */}
