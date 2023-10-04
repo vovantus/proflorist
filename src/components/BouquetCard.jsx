@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import YardSharpIcon from '@mui/icons-material/YardRounded';
 
 export default function BouquetCard({
   imageUrl,
@@ -18,6 +19,7 @@ export default function BouquetCard({
         width: '260px',
         height: '260px', // Square aspect ratio
         overflow: 'hidden', // Ensure the image stays within the card
+        border: '1px solid lightgrey',
       }}
       className={display ? '' : 'hiddenCard'}
     >
@@ -26,11 +28,26 @@ export default function BouquetCard({
         style={{
           width: '100%',
           height: '100%',
-          backgroundImage: `url(${imageUrl})`,
+          backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
           backgroundSize: 'cover', // Cover the entire card
           backgroundPosition: 'center', // Center the image
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
         }}
-      />
+      >
+        {!imageUrl && (
+          <YardSharpIcon
+            style={{
+              width: '260px',
+              height: '260px',
+              color: 'lightgrey',
+              position: 'absolute',
+            }}
+          />
+        )}
+      </div>
 
       <CardContent
         sx={{

@@ -10,7 +10,7 @@ export default function BouquetList({ bouquets }) {
       price={bouq.Price}
       date={bouq.$createdAt}
       display={true}
-      link={'/proflorist/bouquet/' + bouq.$id}
+      link={'bouquet/' + bouq.$id}
     />
   ));
 

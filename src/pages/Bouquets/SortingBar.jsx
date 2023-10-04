@@ -2,7 +2,10 @@ import Chip from '@mui/material/Chip';
 
 export default function SortingBar({ updateSorting }) {
   return (
-    <div className="sortingBar">
+    <div
+      className="sortingBar"
+      style={{ display: 'flex', justifyContent: 'center' }}
+    >
       <Chip
         onClick={() => updateSorting('Name')}
         label="Name"
