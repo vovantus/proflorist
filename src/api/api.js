@@ -64,7 +64,6 @@ const api = {
         Server.databaseID,
         Server.collectionID,
       );
-      console.log('bouquets loaded', data.documents);
       return data.documents;
     } catch (e) {
       console.log('error', e);

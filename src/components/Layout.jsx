@@ -6,7 +6,7 @@ function Layout() {
   return (
     <div>
       <AppHeader />
-      <div className="content" style={{ margin: '10px 10px 10px 60px' }}>
+      <div className="content">
         <Grid container spacing={2}>
           {/* Main content */}
           <Outlet />

@@ -24,6 +24,14 @@ function AppHeader() {
           flexDirection: 'column', // Vertical layout
           justifyContent: 'flex-start', // Align items to the top
           transition: 'width 0.3s', // Smooth transition for width change
+          '@media (max-width: 600px)': {
+            width: '100%', // Set full width on screens with max width 600px (mobile devices)
+            height: 'auto', // Auto height
+            flexDirection: 'row', // Horizontal layout
+            justifyContent: 'space-between', // Align items horizontally
+            alignItems: 'center', // Center items vertically
+            padding: '8px 16px', // Add padding to the app bar for spacing
+          },
         }}
       >
         <div
@@ -63,27 +71,33 @@ function AppHeader() {
               ))}
             </div>
           ) : (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                transform: 'rotate(-90deg)',
-                transformOrigin: 'center',
-                margin: '30px 10px',
+            <Typography
+              variant="h6"
+              sx={{
+                '@media (max-width: 600px)': {
+                  display: 'none', // Hide on mobile screens
+                },
               }}
             >
-              <Typography variant="h6">
-                <Link
-                  component={RouterLink}
-                  to="/proflorist/"
-                  color="white"
-                  underline="hover"
+              <Link
+                component={RouterLink}
+                to="/proflorist/"
+                color="white"
+                underline="hover"
+              >
+                <div
+                  style={{
+                    flexGrow: 1,
+                    textAlign: 'center',
+                    transform: 'rotate(-90deg)',
+                    transformOrigin: 'center',
+                    margin: '30px 10px',
+                  }}
                 >
                   Proflorist
-                </Link>
-              </Typography>
-            </div>
+                </div>
+              </Link>
+            </Typography>
           )}
         </div>
       </AppBar>

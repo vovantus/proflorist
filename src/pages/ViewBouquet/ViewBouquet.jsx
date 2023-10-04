@@ -7,7 +7,6 @@ import { Grid, Container } from '@mui/material';
 export default function ViewBouquet() {
   const { id } = useParams();
   const { bouquet, isLoading } = useBouquetInfo(id);
-  console.log(bouquet);
   return (
     <Container maxWidth="lg">
       <Grid container spacing={1}>
