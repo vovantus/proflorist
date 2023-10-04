@@ -8,20 +8,25 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { BrowserRouter } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { AppBarProvider } from './contexts/AppBarContext';
 import AppWrapper from './components/AppWrapper';
+
+const router = createHashRouter([
+  {
+    path: '/*',
+    element: <App />,
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AppBarProvider>
-        <AppWrapper>
-          <App />
-        </AppWrapper>
-      </AppBarProvider>
-    </BrowserRouter>
+    <AppBarProvider>
+      <AppWrapper>
+        <RouterProvider router={router} />
+      </AppWrapper>
+    </AppBarProvider>
   </React.StrictMode>,
 );
 

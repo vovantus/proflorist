@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/proflorist" element={<Layout />}>
           <Route index element={<BouquetsPage />} />
-          <Route path="bouquet/">
+          <Route path="bouquet">
             <Route path=":id" element={<ViewBouquet />} />
             <Route path="edit" element={<EditBouquet />} />
             <Route path="add" element={<AddBouquet />} />
