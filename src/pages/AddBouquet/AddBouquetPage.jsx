@@ -2,6 +2,7 @@ import { Container, Typography, TextField, Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export default function AddBouquet() {
   const [bouquet, setBouquet] = useState({
@@ -9,6 +10,10 @@ export default function AddBouquet() {
     price: '',
     description: '',
   });
+
+  const [buttonActive, setButtonActive] = useState(true);
+
+  const setButtonActiveDelayed = useDebounce(setButtonActive, 1000);
 
   const navigate = useNavigate();
 
@@ -28,11 +33,11 @@ export default function AddBouquet() {
       Description: bouquet.description,
       Visibility: true,
     };
-    console.log(data);
-
+    setButtonActive(false);
     api
       .createBouquet(data)
       .then((result) => {
+        setButtonActiveDelayed(true);
         setBouquet({
           name: '',
           price: '',
@@ -42,6 +47,7 @@ export default function AddBouquet() {
         console.log(result);
       })
       .catch((e) => {
+        setButtonActiveDelayed(true);
         console.log(e);
       });
     console.log(bouquet);
@@ -90,7 +96,13 @@ export default function AddBouquet() {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button fullWidth type="submit" variant="contained" color="primary">
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={!buttonActive}
+            >
               Save
             </Button>
           </Grid>
