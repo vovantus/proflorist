@@ -1,7 +1,7 @@
 import { Container, Typography, TextField, Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import api from '../../api/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDebounce } from '../../hooks/useDebounce';
 
 export default function AddBouquet() {
@@ -10,6 +10,8 @@ export default function AddBouquet() {
     price: '',
     description: '',
   });
+
+  const location = useLocation();
 
   const [buttonActive, setButtonActive] = useState(true);
 
@@ -52,6 +54,8 @@ export default function AddBouquet() {
       });
     console.log(bouquet);
   };
+
+  console.log(location);
 
   return (
     <Container maxWidth="sm" style={{ paddingTop: '30px' }}>
