@@ -1,4 +1,4 @@
-import { useState, useMemo, useLayoutEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   toggleSortDirection,
   compareBouquets,
