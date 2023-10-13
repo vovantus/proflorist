@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import api from '../../api/api';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../hooks/useDebounce';
 
 export default function AddBouquet() {
@@ -20,7 +20,6 @@ export default function AddBouquet() {
   });
 
   const [errorFields, setErrorFields] = useState(new Map());
-  const location = useLocation();
   const [buttonActive, setButtonActive] = useState(true);
   const [formError, setFormError] = useState('');
 
@@ -105,15 +104,14 @@ export default function AddBouquet() {
     }
   };
 
-  console.log(location);
-
   return (
     <Container maxWidth="sm" style={{ paddingTop: '30px' }}>
       <Typography variant="h4" gutterBottom>
         Add new bouquet
       </Typography>
-      <FormControl error={formError ? true : false}>
-        <form onSubmit={saveBouquet}>
+
+      <form onSubmit={saveBouquet}>
+        <FormControl error={formError ? true : false}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -167,8 +165,8 @@ export default function AddBouquet() {
               <FormHelperText>{formError}</FormHelperText>
             </Grid>
           </Grid>
-        </form>
-      </FormControl>
+        </FormControl>
+      </form>
     </Container>
   );
 }

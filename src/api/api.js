@@ -1,5 +1,5 @@
 import { Server } from '../utils/config';
-import { Client, Databases } from 'appwrite';
+import { Client, Databases, Account } from 'appwrite';
 
 const api = {
   sdk: null,
@@ -11,8 +11,26 @@ const api = {
     const client = new Client();
     client.setEndpoint(Server.endpoint).setProject(Server.project);
     const databases = new Databases(client);
-    api.sdk = { databases };
+    const account = new Account(client);
+    api.sdk = { databases, account };
     return api.sdk;
+  },
+
+  createAccount: (email, password, name) => {
+    return api.provider().account.create('unique()', email, password, name);
+  },
+
+  getAccount: () => {
+    let account = api.provider().account;
+    return account.get();
+  },
+
+  createSession: (email, password) => {
+    return api.provider().account.createEmailSession(email, password);
+  },
+
+  deleteCurrentSession: () => {
+    return api.provider().account.deleteSession('current');
   },
 
   listDocuments: (databaseId, collectionID) => {
@@ -93,7 +111,6 @@ const api = {
 
   createBouquet: async (bouquet) => {
     try {
-      console.log('create call');
       const data = await api.createDocument(
         Server.databaseID,
         Server.collectionID,
@@ -101,7 +118,7 @@ const api = {
       );
       return data;
     } catch (e) {
-      console.error('Error in adding bouquet');
+      console.error('Error adding bouquet');
       console.log('error', e);
       throw e;
     }
