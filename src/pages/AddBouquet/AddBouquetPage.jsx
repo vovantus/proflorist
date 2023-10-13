@@ -10,7 +10,7 @@ import {
 import { useState } from 'react';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useDelay } from '../../hooks/useDelay';
 import URLS from '../../routes/urls';
 
 export default function AddBouquet() {
@@ -24,7 +24,7 @@ export default function AddBouquet() {
   const [buttonActive, setButtonActive] = useState(true);
   const [formError, setFormError] = useState('');
 
-  const setButtonActiveDelayed = useDebounce(setButtonActive, 1000);
+  const setButtonActiveDelayed = useDelay(setButtonActive, 1000);
   const navigate = useNavigate();
 
   const editBouquetField = (e) => {
