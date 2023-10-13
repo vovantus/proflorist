@@ -1,5 +1,5 @@
 const URLS = {
-  ROOT: '/proflorist',
+  ROOT: '/',
   LOGIN: 'login',
   BOUQUET: {
     VIEW: 'bouquet/:id',
