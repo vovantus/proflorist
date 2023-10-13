@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
+import URLS from '../../routes/urls';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ const LoginPage = () => {
           const data = api.getAccount();
           console.log(data);
           setButtonActive(true);
-          navigate('/proflorist');
+          navigate(URLS.ROOT);
         })
         .catch((e) => {
           setFormError('Wrong password');

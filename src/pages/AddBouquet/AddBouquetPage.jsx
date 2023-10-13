@@ -11,6 +11,7 @@ import { useState } from 'react';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../hooks/useDebounce';
+import URLS from '../../routes/urls';
 
 export default function AddBouquet() {
   const [bouquet, setBouquet] = useState({
@@ -94,7 +95,7 @@ export default function AddBouquet() {
             price: '',
             description: '',
           });
-          navigate('/proflorist/');
+          navigate(URLS.ROOT);
           console.log(result);
         })
         .catch((e) => {

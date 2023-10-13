@@ -9,6 +9,7 @@ import LoginPage from './pages/Login/LoginPage';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 //import { useGetUser } from './hooks/useGetUser';
+import URLS from './routes/urls';
 
 function App() {
   const theme = createTheme();
@@ -19,16 +20,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/proflorist" element={<Layout />}>
+        <Route path={URLS.ROOT} element={<Layout />}>
           <Route index element={<BouquetsPage />} />
-          <Route path="bouquet">
-            <Route path=":id" element={<ViewBouquet />} />
-            <Route path="edit" element={<EditBouquet />} />
-            <Route path="add" element={<AddBouquet />} />
-          </Route>
-          <Route path="login" element={<LoginPage />} />
+          <Route path={URLS.BOUQUET.VIEW} element={<ViewBouquet />} />
+          <Route path={URLS.BOUQUET.EDIT} element={<EditBouquet />} />
+          <Route path={URLS.BOUQUET.ADD} element={<AddBouquet />} />
+          <Route path={URLS.LOGIN} element={<LoginPage />} />
         </Route>
-
         <Route path="*" element={<Error404 />} />
       </Routes>
     </ThemeProvider>

@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 import api from '../api/api';
 import { useNavigate } from 'react-router-dom';
+import URLS from '../routes/urls';
 
 function AppHeader() {
   const { isDrawerOpen, toggleDrawer } = useAppBar();
@@ -22,7 +23,7 @@ function AppHeader() {
   const handleLogout = async () => {
     try {
       console.log('logout');
-      api.deleteCurrentSession().then(() => navigate('login'));
+      api.deleteCurrentSession().then(() => navigate(URLS.LOGIN));
     } catch (e) {
       console.log('e');
     }
