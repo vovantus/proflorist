@@ -76,7 +76,7 @@ function AppHeader() {
                 >
                   <Link
                     component={RouterLink}
-                    to="/proflorist/"
+                    to={URLS.ROOT}
                     color="white"
                     underline="hover"
                   >
@@ -106,7 +106,7 @@ function AppHeader() {
               >
                 <Link
                   component={RouterLink}
-                  to="/proflorist/"
+                  to={URLS.ROOT}
                   color="white"
                   underline="hover"
                 >
