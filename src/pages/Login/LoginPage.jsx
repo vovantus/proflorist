@@ -60,7 +60,7 @@ const LoginPage = () => {
                 value={email}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 fullWidth
                 id="password"
@@ -70,7 +70,7 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <Button
