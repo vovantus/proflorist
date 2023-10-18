@@ -20,10 +20,13 @@ function AppHeader() {
 
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
       console.log('logout');
-      api.deleteCurrentSession().then(() => navigate(URLS.LOGIN));
+      api.deleteCurrentSession().then(() => {
+        console.log('loggedout');
+        navigate(URLS.LOGIN);
+      });
     } catch (e) {
       console.log('e');
     }

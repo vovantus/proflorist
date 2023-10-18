@@ -9,15 +9,14 @@ import {
   Button,
 } from '@mui/material';
 import api from '../../api/api';
-import { useNavigate } from 'react-router-dom';
-import URLS from '../../routes/urls';
+import { useAuth } from '../../contexts/AuthContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState('');
   const [buttonActive, setButtonActive] = useState(true);
-  const navigate = useNavigate();
+  const { getUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,13 +25,11 @@ const LoginPage = () => {
       api
         .createSession(email, password)
         .then(() => {
-          const data = api.getAccount();
-          console.log(data);
           setButtonActive(true);
-          navigate(URLS.ROOT);
+          getUser();
         })
         .catch((e) => {
-          setFormError('Wrong password');
+          setFormError('Wrong email or password');
           console.log(e);
           setButtonActive(true);
         });
@@ -60,7 +57,7 @@ const LoginPage = () => {
                 value={email}
               />
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 id="password"
@@ -70,7 +67,7 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
-            </Grid> */}
+            </Grid>
 
             <Grid item xs={12}>
               <Button

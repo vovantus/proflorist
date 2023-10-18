@@ -1,6 +1,7 @@
 const URLS = {
   ROOT: '/',
-  LOGIN: 'login',
+  LOGIN: '/login',
+  ADMIN: '/florist',
   BOUQUET: {
     VIEW: 'bouquet/:id',
     EDIT: 'bouquet/edit/:id',
