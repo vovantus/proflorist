@@ -12,9 +12,11 @@ import Loading from '../../components/Loading';
 import SearchBar from '../../components/SearchBar';
 import BouquetList from './BouquetList';
 import CreateBouquetButton from '../../components/CreateBouquetButton.jsx';
+import { useDebounceLastCall } from '../../hooks/useDebounceLastCall.js';
 
 export default function BouquetsPage() {
   const { bouquets, isLoading } = useGetBouquets();
+  const debouncedSearch = useDebounceLastCall(updateSearchTerm, 500);
 
   const priceFilterRange = useMemo(() => {
     if (bouquets.length == 0) {
@@ -84,7 +86,7 @@ export default function BouquetsPage() {
 
       {/* Search Bar */}
       <Grid item xs={8} sm={6} md={3}>
-        <SearchBar updateSearchTerm={updateSearchTerm} />
+        <SearchBar updateSearchTerm={debouncedSearch} />
       </Grid>
 
       {/* Create bouquet */}
