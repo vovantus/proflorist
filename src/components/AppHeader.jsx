@@ -8,29 +8,16 @@ import Link from '@mui/material/Link';
 import { useAppBar } from '../contexts/AppBarContext';
 import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
-import api from '../api/api';
-import { useNavigate } from 'react-router-dom';
+
 import URLS from '../routes/urls';
+import { useAuth } from '../contexts/AuthContext';
 
 function AppHeader() {
   const { isDrawerOpen, toggleDrawer } = useAppBar();
+  const { logOut } = useAuth();
 
   const menuItems = ['Bouquets', 'Flowers', 'Profile', 'Settings', 'Logout'];
   const location = useLocation();
-
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    try {
-      console.log('logout');
-      api.deleteCurrentSession().then(() => {
-        console.log('loggedout');
-        navigate(URLS.LOGIN);
-      });
-    } catch (e) {
-      console.log('e');
-    }
-  };
 
   return (
     <div>
@@ -79,7 +66,7 @@ function AppHeader() {
                 >
                   <Link
                     component={RouterLink}
-                    to={URLS.ROOT}
+                    to={URLS.ADMIN}
                     color="white"
                     underline="hover"
                   >
@@ -94,7 +81,7 @@ function AppHeader() {
                     {text}
                   </div>
                 ))}
-                <Button variant="contained" onClick={handleLogout}>
+                <Button variant="contained" onClick={logOut}>
                   Logout
                 </Button>
               </div>
@@ -109,7 +96,7 @@ function AppHeader() {
               >
                 <Link
                   component={RouterLink}
-                  to={URLS.ROOT}
+                  to={URLS.ADMIN}
                   color="white"
                   underline="hover"
                 >

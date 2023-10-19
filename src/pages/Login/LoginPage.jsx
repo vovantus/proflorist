@@ -8,36 +8,28 @@ import {
   FormHelperText,
   Button,
 } from '@mui/material';
-import api from '../../api/api';
 import { useAuth } from '../../contexts/AuthContext';
+import URLS from '../../routes/urls';
+import { Navigate } from 'react-router';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState('');
   const [buttonActive, setButtonActive] = useState(true);
-  const { getUser } = useAuth();
+  const { user, loginUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setButtonActive(false);
-    try {
-      api
-        .createSession(email, password)
-        .then(() => {
-          setButtonActive(true);
-          getUser();
-        })
-        .catch((e) => {
-          setFormError('Wrong email or password');
-          console.log(e);
-          setButtonActive(true);
-        });
-    } catch (e) {
-      console.log(e);
-    }
+    loginUser(email, password).catch(() => {
+      setFormError('Wrong email or password');
+      setButtonActive(true);
+    });
   };
-  return (
+  return user ? (
+    <Navigate to={URLS.ADMIN} />
+  ) : (
     <Container maxWidth="sm" style={{ paddingTop: '30px' }}>
       <Typography variant="h4" gutterBottom>
         Login

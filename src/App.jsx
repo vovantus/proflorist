@@ -2,6 +2,7 @@ import './App.css';
 import BouquetsPage from './pages/Bouquets/BouquetsPage';
 import ViewBouquet from './pages/ViewBouquet/ViewBouquet';
 import AddBouquet from './pages/AddBouquet/AddBouquetPage';
+import HomePage from './pages/Home/HomePage';
 import Error404 from './pages/NotFound/404';
 import EditBouquet from './pages/EditBouquet/EditBouquet';
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -19,6 +20,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <Routes>
+          <Route element={<Layout />}>
+            <Route path={URLS.ROOT} element={<HomePage />} />
+            <Route path={URLS.LOGIN} element={<LoginPage />} />
+          </Route>
           <Route
             path={URLS.ADMIN}
             element={
@@ -33,7 +38,6 @@ function App() {
             <Route path={URLS.BOUQUET.ADD} element={<AddBouquet />} />
           </Route>
 
-          <Route path={URLS.LOGIN} element={<LoginPage />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </AuthProvider>

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useMemo } from 'react';
+import { createContext, useContext, useMemo } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router';
 import api from '../api/api';
 import URLS from '../routes/urls';
@@ -10,42 +11,44 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(async () => {
-    const creds = await api.getAccount();
-    console.log('auth context use state user', creds);
-    return creds;
-  });
+  const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
 
   console.log('auth context', user);
 
-  const getUser = async () => {
-    try {
-      const creds = await api.getAccount();
-      console.log('auth context getuser', creds);
-      setUser(creds);
-      navigate(URLS.ADMIN);
-    } catch (e) {
-      console.log(e);
-    }
+  const loginUser = (email, password) => {
+    return api
+      .createSession(email, password)
+      .then(() => {
+        return api.getAccount();
+      })
+      .then((user) => {
+        console.log('login auth context account', user);
+        setUser(user);
+        navigate(URLS.ADMIN);
+      })
+      .catch((e) => {
+        console.log('loginUser error:', e);
+        throw e;
+      });
   };
 
   const logOut = () => {
+    setUser(null);
     api
       .deleteCurrentSession()
-      .then(() => {
-        setUser();
-        navigate(URLS.LOGIN);
-      })
       .catch((e) => {
         console.log(e);
+      })
+      .finally(() => {
+        navigate(URLS.LOGIN);
       });
   };
 
   const value = useMemo(
     () => ({
       user,
-      getUser,
+      loginUser,
       logOut,
     }),
     [user],
