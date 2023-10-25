@@ -14,7 +14,13 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
 
-  console.log('auth context', user);
+  api
+    .getCurrentSession()
+    .then()
+    .catch(() => {
+      console.log('session expired');
+      setUser(null);
+    });
 
   const loginUser = (email, password) => {
     return api

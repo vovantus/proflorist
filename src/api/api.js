@@ -29,6 +29,10 @@ const api = {
     return api.provider().account.createEmailSession(email, password);
   },
 
+  getCurrentSession: () => {
+    return api.provider().account.getSession('current');
+  },
+
   deleteCurrentSession: () => {
     return api.provider().account.deleteSession('current');
   },
