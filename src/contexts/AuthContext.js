@@ -13,14 +13,11 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
-
-  api
-    .getCurrentSession()
-    .then()
-    .catch(() => {
-      console.log('session expired');
-      setUser(null);
-    });
+  // Q
+  api.getAccount().catch(() => {
+    console.log('session expired');
+    setUser(null);
+  });
 
   const loginUser = (email, password) => {
     return api
