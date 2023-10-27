@@ -1,5 +1,5 @@
 import { Server } from '../utils/config';
-import { Client, Databases, Account } from 'appwrite';
+import { Client, Databases, Account, Permission, Role, Teams } from 'appwrite';
 
 const api = {
   sdk: null,
@@ -12,7 +12,8 @@ const api = {
     client.setEndpoint(Server.endpoint).setProject(Server.project);
     const databases = new Databases(client);
     const account = new Account(client);
-    api.sdk = { databases, account };
+    const teams = new Teams(client);
+    api.sdk = { databases, account, teams };
     return api.sdk;
   },
 
@@ -47,10 +48,16 @@ const api = {
       .databases.getDocument(databaseId, collectionID, documentId);
   },
 
-  createDocument: (databaseId, collectionId, data) => {
+  createDocument: async (databaseId, collectionId, data) => {
+    const teamsList = await api.provider().teams.list();
+    const userTeam = teamsList.teams[0];
+    console.log(userTeam);
     return api
       .provider()
-      .databases.createDocument(databaseId, collectionId, 'unique()', data);
+      .databases.createDocument(databaseId, collectionId, 'unique()', data, [
+        Permission.read(Role.any()),
+        Permission.write(Role.team(userTeam.$id)),
+      ]);
   },
 
   updateEmptyFields: (databaseId, collectionID, fieldName) => {

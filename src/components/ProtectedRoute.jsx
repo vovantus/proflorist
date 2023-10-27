@@ -4,7 +4,6 @@ import URLS from '../routes/urls';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
-  console.log('protected route', user);
   return user ? children : <Navigate to={URLS.LOGIN} />;
 };
 

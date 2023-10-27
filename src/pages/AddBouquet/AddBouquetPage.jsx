@@ -23,7 +23,6 @@ export default function AddBouquet() {
   const [errorFields, setErrorFields] = useState(new Map());
   const [buttonActive, setButtonActive] = useState(true);
   const [formError, setFormError] = useState('');
-
   const setButtonActiveDelayed = useDelay(setButtonActive, 1000);
   const navigate = useNavigate();
 
@@ -95,7 +94,7 @@ export default function AddBouquet() {
             price: '',
             description: '',
           });
-          navigate(URLS.ROOT);
+          navigate(URLS.ADMIN);
           console.log(result);
         })
         .catch((e) => {

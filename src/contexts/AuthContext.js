@@ -29,12 +29,12 @@ export function AuthProvider({ children }) {
         return api.getAccount();
       })
       .then((user) => {
-        console.log('login auth context account', user);
+        //console.log('login auth context account', user);
         setUser(user);
         navigate(URLS.ADMIN);
       })
       .catch((e) => {
-        console.log('loginUser error:', e);
+        //console.log('loginUser error:', e);
         throw e;
       });
   };
