@@ -13,7 +13,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
-  // Q
+
   api.getAccount().catch(() => {
     console.log('session expired');
     setUser(null);

@@ -6,12 +6,14 @@ import {
   Grid,
   FormControl,
   FormHelperText,
+  CardMedia,
 } from '@mui/material';
 import { useState } from 'react';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useDelay } from '../../hooks/useDelay';
 import URLS from '../../routes/urls';
+import ImageCropper from '../../components/ImageCropper';
 
 export default function AddBouquet() {
   const [bouquet, setBouquet] = useState({
@@ -25,6 +27,8 @@ export default function AddBouquet() {
   const [formError, setFormError] = useState('');
   const setButtonActiveDelayed = useDelay(setButtonActive, 1000);
   const navigate = useNavigate();
+  const [addingImage, setAddingImage] = useState(false);
+  const [image, setImage] = useState();
 
   const editBouquetField = (e) => {
     const { name, value } = e.target;
@@ -104,15 +108,55 @@ export default function AddBouquet() {
     }
   };
 
+  const closeAddingImagePopup = () => {
+    setAddingImage(false);
+  };
+
   return (
-    <Container maxWidth="sm" style={{ paddingTop: '30px' }}>
+    <Container style={{ paddingTop: '30px' }}>
       <Typography variant="h4" gutterBottom>
         Add new bouquet
       </Typography>
 
       <form onSubmit={saveBouquet}>
-        <FormControl error={formError ? true : false}>
-          <Grid container spacing={2}>
+        <FormControl fullWidth error={formError ? true : false}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="stretch"
+            rowSpacing={1}
+            columnSpacing={1}
+            className="addBouquetForm"
+          >
+            {image && (
+              <Grid item xs={12} className="bouquetAddGridItem">
+                <CardMedia
+                  alt="new bouquet"
+                  borderRadius="4px"
+                  image={URL.createObjectURL(image)}
+                  className="addBouquetImage"
+                />
+              </Grid>
+            )}
+            <Grid item xs={12} className="bouquetAddGridItem">
+              <Button
+                variant="contained"
+                color="primary"
+                label="Add image"
+                onClick={() => setAddingImage(true)}
+              >
+                {image ? 'Update image' : 'Add image'}
+              </Button>
+            </Grid>
+            {addingImage && (
+              <ImageCropper
+                open={addingImage}
+                onClose={closeAddingImagePopup}
+                setImage={setImage}
+              />
+            )}
+
             <Grid item xs={12}>
               <TextField
                 error={errorFields.has('name')}
