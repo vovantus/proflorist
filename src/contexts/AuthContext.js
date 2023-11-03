@@ -3,6 +3,8 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router';
 import api from '../api/api';
 import URLS from '../routes/urls';
+import { useLocation } from 'react-router-dom';
+import useHttp from '../hooks/useHttp';
 
 const AuthContext = createContext();
 
@@ -13,11 +15,16 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
-  // Q
-  api.getAccount().catch(() => {
-    console.log('session expired');
-    setUser(null);
-  });
+  //Q
+  const location = useLocation();
+  const { error } = useHttp(api.getAccount, location, () => setUser(null));
+  error && console.log('authorization error');
+
+  //   useEffect(() => {
+  //     api.getAccount().catch(() => {
+  //       setUser(null);
+  //     });
+  //   }, [location]);
 
   const loginUser = (email, password) => {
     return api
