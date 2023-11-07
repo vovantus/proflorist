@@ -1,24 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
-const useHttp = (request, dependency, onError) => {
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+class AuthenticationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'AuthenticationError';
+  }
+}
 
-  useEffect(() => {
-    request()
-      .then((data) => {
-        setData(data);
-        setError('');
+const useHttp = (request) => {
+  const { logOut } = useAuth();
+
+  const safeRequest = (data) => {
+    return request(data)
+      .then((response) => {
+        return response;
       })
       .catch((e) => {
-        setError(e);
-        onError();
-      })
-      .finally(setLoading(false));
-  }, [dependency]);
+        if (e.code === 401) {
+          setTimeout(() => logOut(), 4000);
+          throw new AuthenticationError(e.message);
+        }
+        throw e;
+      });
+  };
 
-  return { data, loading, error };
+  return safeRequest;
 };
 
-export default useHttp;
+export { useHttp, AuthenticationError };

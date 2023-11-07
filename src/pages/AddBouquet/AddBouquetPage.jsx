@@ -12,6 +12,7 @@ import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useDelay } from '../../hooks/useDelay';
 import URLS from '../../routes/urls';
+import { useHttp, AuthenticationError } from '../../hooks/useHttp';
 
 export default function AddBouquet() {
   const [bouquet, setBouquet] = useState({
@@ -25,6 +26,7 @@ export default function AddBouquet() {
   const [formError, setFormError] = useState('');
   const setButtonActiveDelayed = useDelay(setButtonActive, 1000);
   const navigate = useNavigate();
+  const addBouquetSafe = useHttp(api.createBouquet);
 
   const editBouquetField = (e) => {
     const { name, value } = e.target;
@@ -85,9 +87,8 @@ export default function AddBouquet() {
         Visibility: true,
       };
       setButtonActive(false);
-      api
-        .createBouquet(data)
-        .then((result) => {
+      addBouquetSafe(data)
+        .then(() => {
           setButtonActiveDelayed(true);
           setBouquet({
             name: '',
@@ -95,11 +96,13 @@ export default function AddBouquet() {
             description: '',
           });
           navigate(URLS.ADMIN);
-          console.log(result);
         })
         .catch((e) => {
-          setFormError('Something wrong, reload page and try again');
-          console.log(e);
+          const errorText =
+            e instanceof AuthenticationError
+              ? 'User not authorised, please log in.'
+              : 'Something wrong, reload page and try again';
+          setFormError(errorText);
         });
     }
   };
