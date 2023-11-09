@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDelay } from '../../hooks/useDelay';
 import URLS from '../../routes/urls';
 import ImageCropper from '../../components/ImageCropper';
+import Loading from '../../components/Loading';
 
 export default function AddBouquet() {
   const [bouquet, setBouquet] = useState({
@@ -29,6 +30,7 @@ export default function AddBouquet() {
   const navigate = useNavigate();
   const [addingImage, setAddingImage] = useState(false);
   const [image, setImage] = useState();
+  const [imageUrl, setImageUrl] = useState();
 
   const editBouquetField = (e) => {
     const { name, value } = e.target;
@@ -39,11 +41,13 @@ export default function AddBouquet() {
       ...bouquet,
       [name]: value,
     });
+    setButtonActive(true);
   };
 
   const editPriceField = (e) => {
     e.target.value = e.target.value.replace(/[^0-9.]/g, '');
     editBouquetField(e);
+    setButtonActive(true);
   };
 
   const verifyName = (name) => {
@@ -65,51 +69,92 @@ export default function AddBouquet() {
         return newFields;
       });
       return false;
-    } else {
-      return true;
     }
+    return true;
+  };
+
+  const verifyImage = () => {
+    if (!image) {
+      setErrorFields((errorFields) => {
+        const newFields = new Map(errorFields);
+        newFields.set('image', 'Please add image');
+        return newFields;
+      });
+      return false;
+    }
+    return true;
   };
 
   const verifyFields = (bouquet) => {
     const verificationFunctions = [
       verifyName(bouquet.name),
       verifyPrice(bouquet.price),
+      verifyImage(),
     ];
 
     return verificationFunctions.every((el) => el === true);
   };
 
-  const saveBouquet = (e) => {
+  const saveBouquet = async (e) => {
     e.preventDefault();
-    if (verifyFields(bouquet)) {
+    setButtonActive(false);
+
+    if (!verifyFields(bouquet)) {
+      setButtonActive(true);
+      return;
+    }
+
+    try {
+      const imageUrl = await uploadImage();
       const data = {
         Name: bouquet.name,
         Price: bouquet.price,
         Description: bouquet.description,
         Visibility: true,
+        ImageUrl: imageUrl,
       };
-      setButtonActive(false);
-      api
-        .createBouquet(data)
-        .then((result) => {
-          setButtonActiveDelayed(true);
-          setBouquet({
-            name: '',
-            price: '',
-            description: '',
-          });
-          navigate(URLS.ADMIN);
-          console.log(result);
-        })
-        .catch((e) => {
-          setFormError('Something wrong, reload page and try again');
-          console.log(e);
-        });
+
+      await api.createBouquet(data);
+      setButtonActiveDelayed(true);
+      setBouquet({ name: '', price: '', description: '' });
+      navigate(URLS.ADMIN);
+    } catch (error) {
+      setButtonActive(true);
+      setFormError(
+        'Something went wrong, please reload the page and try again',
+      );
+      console.error(error);
     }
   };
 
   const closeAddingImagePopup = () => {
     setAddingImage(false);
+  };
+
+  const uploadImage = async () => {
+    try {
+      const fileData = await api.uploadFile(image);
+      const info = await api.getFile(fileData.$id);
+      return info.href;
+    } catch (error) {
+      console.error(error);
+      setButtonActive(true);
+      setFormError('Image upload error, please upload a new one');
+      throw error;
+    }
+  };
+
+  const setImageAndActivateButton = (image) => {
+    setImage(image);
+    setImageUrl(URL.createObjectURL(image));
+    setButtonActive(true);
+  };
+
+  const handleAddImageClick = () => {
+    setAddingImage(true);
+    const newFields = new Map(errorFields);
+    newFields.delete('image');
+    setErrorFields(newFields);
   };
 
   return (
@@ -129,12 +174,11 @@ export default function AddBouquet() {
             columnSpacing={1}
             className="addBouquetForm"
           >
-            {image && (
+            {imageUrl && (
               <Grid item xs={12} className="bouquetAddGridItem">
                 <CardMedia
                   alt="new bouquet"
-                  borderRadius="4px"
-                  image={URL.createObjectURL(image)}
+                  image={imageUrl}
                   className="addBouquetImage"
                 />
               </Grid>
@@ -144,16 +188,22 @@ export default function AddBouquet() {
                 variant="contained"
                 color="primary"
                 label="Add image"
-                onClick={() => setAddingImage(true)}
+                onClick={handleAddImageClick}
               >
-                {image ? 'Update image' : 'Add image'}
+                {image ? 'Change image' : 'Add image'}
               </Button>
             </Grid>
+            {errorFields.has('image') && (
+              <Grid item xs={12} className="bouquetAddGridItem">
+                <div className="imageError">{errorFields.get('image')}</div>
+              </Grid>
+            )}
+
             {addingImage && (
               <ImageCropper
                 open={addingImage}
                 onClose={closeAddingImagePopup}
-                setImage={setImage}
+                setImage={setImageAndActivateButton}
               />
             )}
 
@@ -203,8 +253,15 @@ export default function AddBouquet() {
                 variant="contained"
                 color="primary"
                 disabled={!buttonActive}
+                className="addBouquetButton"
               >
-                Save
+                <Loading
+                  loading={!buttonActive}
+                  size={25}
+                  color={'grey'}
+                  style={'buttonLoading'}
+                />
+                {buttonActive && 'Save'}
               </Button>
               <FormHelperText>{formError}</FormHelperText>
             </Grid>

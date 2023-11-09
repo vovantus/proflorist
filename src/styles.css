@@ -23,11 +23,54 @@
   margin: 10px 10px 10px 70px;
 }
 
+.loadingIndicatorContainer {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.buttonLoadingIndicator {
+    width: 25px;
+    height: 25px;
+    color: rgba(0, 0, 0, 0.12);
+}
+
+.buttonLoading {
+    padding-top: 5px;
+}
+
+.addBouquetButton {
+    height: 37px;
+}
+
+.imageError {
+    color: #d32f2f;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+}
+
+
 @media (max-width: 600px) {
   .content {
     margin: 60px 10px 10px 10px;
   }
 }
+
+.addBouquetImage{
+    object-fit: contain;
+    border-radius: 4px;
+    height: 260px;
+    width: 260px;
+  }
+
+
+  .addImageBtn{
+    width: 300px;
+  }
 
 .modal {
         position: absolute;
@@ -36,6 +79,8 @@
         transform: translate(-50%, -50%);
         min-width: 400px;
         min-height: 200px;
+        max-height: 80vh;
+        max-width: 80vw;
         background-color: white;
         border-radius: 12px;
         box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
@@ -51,19 +96,13 @@
     flex-direction: column;
 }
 
-.addBouquetImage{
-    object-fit: contain;
-    border-radius: 4px;
-    height: 260px;
-    width: 260px;
-  }
 
-
-  .addImageBtn{
-    width: 300px;
-  }
 
 /* image cropper component */
+
+.addImage {
+    min-height: 50px;
+}
 
 .addImage input {
     display: none;
@@ -111,19 +150,31 @@
 .addImage .cropperBtns {
     display: flex;
     flex-direction: row;
-
+    margin-bottom: 5px;
 }
 
 .addImage .cropperBtn {
     margin: 0px 4px;
 }
 
-.addImage .cropperContainer {
-    padding: 16px;
-}
+
 
 .addImage .cropperModule {
     border-radius: 16px;
     overflow: hidden;
+    display: flex;
+    flex-direction:column;
+    margin:20px;
+ 
 }
+
+.cropperModule img {
+        display: block;
+      
+        /* This rule is very important, please don't ignore this */
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
 

@@ -96,10 +96,10 @@ export default function BouquetsPage() {
 
       {/* Bouquet List */}
       <Grid item xs={12}>
-        {isLoading === 'loaded' ? (
-          <BouquetList bouquets={filteredBouquets} />
-        ) : (
-          <Loading loaderState={isLoading} />
+        {isLoading === 'loaded' && <BouquetList bouquets={filteredBouquets} />}
+        <Loading loading={isLoading === 'loading'} size={100} />
+        {isLoading === 'error' && (
+          <div>Error loading bouquets. Reload page or try again later.</div>
         )}
       </Grid>
     </>

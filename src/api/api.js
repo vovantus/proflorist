@@ -1,5 +1,13 @@
 import { Server } from '../utils/config';
-import { Client, Databases, Account, Permission, Role, Teams } from 'appwrite';
+import {
+  Client,
+  Databases,
+  Account,
+  Permission,
+  Role,
+  Teams,
+  Storage,
+} from 'appwrite';
 
 const api = {
   sdk: null,
@@ -13,7 +21,8 @@ const api = {
     const databases = new Databases(client);
     const account = new Account(client);
     const teams = new Teams(client);
-    api.sdk = { databases, account, teams };
+    const storage = new Storage(client);
+    api.sdk = { databases, account, teams, storage };
     return api.sdk;
   },
 
@@ -133,6 +142,14 @@ const api = {
       console.log('error', e);
       throw e;
     }
+  },
+
+  uploadFile: (file) => {
+    return api.provider().storage.createFile(Server.bucketID, 'unique()', file);
+  },
+
+  getFile: async (fileId) => {
+    return api.provider().storage.getFileView(Server.bucketID, fileId);
   },
 };
 

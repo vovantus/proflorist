@@ -2,18 +2,21 @@ import { Modal, Box, Container, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Cropper } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import Loading from './Loading';
 
 const ImageCropper = ({ open, onClose, setImage }) => {
   const [error, setError] = useState('');
   const [cropper, setCropper] = useState();
   const [fileData, setFileData] = useState(null);
   const [selectedImage, setSelectedImage] = useState();
+  const [loading, setLoading] = useState();
+
   const handleSelectImageFile = async (event) => {
     setError('');
     const file = event.target.files?.[0];
     if (file) {
       try {
-        //setLoading(true);
+        setLoading(true);
         setFileData(file);
         let uploadingFile = file;
         const fileReader = new FileReader();
@@ -27,7 +30,7 @@ const ImageCropper = ({ open, onClose, setImage }) => {
           event.target.value = '';
         });
       } catch (e) {
-        //setLoading(false);
+        setLoading(false);
         setError('Error loading file. Try again.');
       }
     }
@@ -134,29 +137,31 @@ const ImageCropper = ({ open, onClose, setImage }) => {
             <Typography variant="h5" gutterBottom>
               Crop the image
             </Typography>
-            <Container className="cropperContainer">
-              <Cropper
-                src={selectedImage}
-                className="cropperModule"
-                viewMode={1}
-                dragMode="crop"
-                initialAspectRatio={1.0}
-                minCropBoxHeight={10}
-                minCropBoxWidth={10}
-                autoCropArea={0.8}
-                aspectRatio={1.0}
-                background={false}
-                cropBoxMovable={true}
-                cropBoxResizable={true}
-                toggleDragModeOnDblclick={false}
-                zoomOnWheel={true}
-                guides={false}
-                onInitialized={(instance) => {
-                  setCropper(instance);
-                  // setLoading(false);
-                }}
-              />
-            </Container>
+
+            <Cropper
+              src={selectedImage}
+              className="cropperModule"
+              viewMode={1}
+              dragMode="crop"
+              initialAspectRatio={1.0}
+              minCropBoxHeight={10}
+              minCropBoxWidth={10}
+              autoCropArea={0.95}
+              aspectRatio={1.0}
+              background={false}
+              cropBoxMovable={true}
+              cropBoxResizable={true}
+              toggleDragModeOnDblclick={false}
+              zoomOnWheel={true}
+              guides={false}
+              onInitialized={(instance) => {
+                setCropper(instance);
+                setLoading(false);
+              }}
+            />
+
+            <Loading loading={loading} size={50} />
+
             <Container className="cropperBtns">
               <Button
                 className="cropperBtn"

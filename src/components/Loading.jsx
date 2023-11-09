@@ -1,8 +1,19 @@
-export default function Loading({ loaderState }) {
-  let text =
-    loaderState === 'error'
-      ? 'Error while loading. Try again later.'
-      : 'Loading...';
+import { CircularProgress } from '@mui/material';
 
-  return <h2>{text}</h2>;
-}
+const Loading = ({ loading, size, color, style }) => {
+  return (
+    <>
+      {loading && (
+        <div className={['loadingIndicatorContainer' + ' ' + style]}>
+          <CircularProgress
+            disableShrink
+            size={size ? size : 30}
+            color={color}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Loading;
