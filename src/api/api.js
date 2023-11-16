@@ -60,7 +60,7 @@ const api = {
   createDocument: async (databaseId, collectionId, data) => {
     const teamsList = await api.provider().teams.list();
     const userTeam = teamsList.teams[0];
-    console.log(userTeam);
+    console.log('user team:', userTeam);
     return api
       .provider()
       .databases.createDocument(databaseId, collectionId, 'unique()', data, [

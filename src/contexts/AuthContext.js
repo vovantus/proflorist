@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router';
+
 import api from '../api/api';
 import URLS from '../routes/urls';
 
@@ -14,11 +15,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
 
-  api.getAccount().catch(() => {
-    console.log('session expired');
-    setUser(null);
-  });
-
   const loginUser = (email, password) => {
     return api
       .createSession(email, password)
@@ -26,12 +22,10 @@ export function AuthProvider({ children }) {
         return api.getAccount();
       })
       .then((user) => {
-        //console.log('login auth context account', user);
         setUser(user);
         navigate(URLS.ADMIN);
       })
       .catch((e) => {
-        //console.log('loginUser error:', e);
         throw e;
       });
   };

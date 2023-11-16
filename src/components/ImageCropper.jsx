@@ -37,12 +37,10 @@ const ImageCropper = ({ open, onClose, setImage }) => {
   };
 
   const handleCropperSave = async () => {
-    //setLoading(true);
     const result = await getCropData();
     if (result) {
       onClose();
     }
-    // setLoading(false);
     setSelectedImage('');
   };
 

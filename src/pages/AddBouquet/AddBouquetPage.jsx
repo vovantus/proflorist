@@ -15,6 +15,7 @@ import { useDelay } from '../../hooks/useDelay';
 import URLS from '../../routes/urls';
 import ImageCropper from '../../components/ImageCropper';
 import Loading from '../../components/Loading';
+import { useHttp, AuthenticationError } from '../../hooks/useHttp';
 
 export default function AddBouquet() {
   const [bouquet, setBouquet] = useState({
@@ -31,6 +32,7 @@ export default function AddBouquet() {
   const [addingImage, setAddingImage] = useState(false);
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
+  const addBouquetSafe = useHttp(api.createBouquet);
 
   const editBouquetField = (e) => {
     const { name, value } = e.target;
@@ -107,6 +109,8 @@ export default function AddBouquet() {
     try {
       const imageUrl = await uploadImage();
 
+      console.log(imageUrl);
+
       const data = {
         Name: bouquet.name,
         Price: bouquet.price,
@@ -115,16 +119,27 @@ export default function AddBouquet() {
         ImageUrl: imageUrl,
       };
 
-      await api.createBouquet(data);
-      setButtonActiveDelayed(true);
-      setBouquet({ name: '', price: '', description: '' });
-      navigate(URLS.ADMIN);
-    } catch (error) {
-      setButtonActiveDelayed(true);
-      setFormError(
-        'Something went wrong, please reload the page and try again',
-      );
-      console.error(error);
+      setButtonActive(false);
+      addBouquetSafe(data)
+        .then((data) => {
+          console.log(data);
+          setButtonActiveDelayed(true);
+          setBouquet({
+            name: '',
+            price: '',
+            description: '',
+          });
+          navigate(URLS.ADMIN);
+        })
+        .catch((e) => {
+          const errorText =
+            e instanceof AuthenticationError
+              ? 'User not authorised, please log in.'
+              : 'Something wrong, reload page and try again';
+          setFormError(errorText);
+        });
+    } catch {
+      setFormError('something wrong try again');
     }
   };
 
