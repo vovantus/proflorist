@@ -2,7 +2,7 @@ import api from '../api/api';
 import { useState, useEffect } from 'react';
 
 export function useGetUser() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   useEffect(() => {
     api
       .getAccount()

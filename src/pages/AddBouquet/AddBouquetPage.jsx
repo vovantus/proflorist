@@ -30,8 +30,8 @@ export default function AddBouquet() {
   const setButtonActiveDelayed = useDelay(setButtonActive, 1000);
   const navigate = useNavigate();
   const [addingImage, setAddingImage] = useState(false);
-  const [image, setImage] = useState();
-  const [imageUrl, setImageUrl] = useState();
+  const [image, setImage] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const addBouquetSafe = useHttp(api.createBouquet);
 
   const editBouquetField = (e) => {
@@ -121,8 +121,7 @@ export default function AddBouquet() {
 
       setButtonActive(false);
       addBouquetSafe(data)
-        .then((data) => {
-          console.log(data);
+        .then(() => {
           setButtonActiveDelayed(true);
           setBouquet({
             name: '',

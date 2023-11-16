@@ -3,13 +3,14 @@ import { useState } from 'react';
 import { Cropper } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import Loading from './Loading';
+import imageCompression from 'browser-image-compression';
 
 const ImageCropper = ({ open, onClose, setImage }) => {
   const [error, setError] = useState('');
-  const [cropper, setCropper] = useState();
+  const [cropper, setCropper] = useState(null);
   const [fileData, setFileData] = useState(null);
-  const [selectedImage, setSelectedImage] = useState();
-  const [loading, setLoading] = useState();
+  const [selectedImage, setSelectedImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSelectImageFile = async (event) => {
     setError('');
@@ -45,7 +46,7 @@ const ImageCropper = ({ open, onClose, setImage }) => {
   };
 
   const getCropData = async () => {
-    if (typeof cropper !== 'undefined') {
+    if (cropper !== 'undefined') {
       const croppedOptions = {
         minWidth: 256,
         minHeight: 256,
@@ -76,8 +77,8 @@ const ImageCropper = ({ open, onClose, setImage }) => {
 
     let uploadingFile = new File([blob], fileData.name, fileData);
     if (uploadingFile.size > 1024 * 1024 * maxSizeMB) {
-      const imageCompression = (await import('browser-image-compression'))
-        .default;
+      //   const imageCompression = (await import('browser-image-compression'))
+      //     .default;
       const compressedBlob = await imageCompression(
         uploadingFile,
         compressOptions,

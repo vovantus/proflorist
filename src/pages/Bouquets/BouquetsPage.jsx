@@ -15,8 +15,13 @@ import CreateBouquetButton from '../../components/CreateBouquetButton.jsx';
 import { useDebounceLastCall } from '../../hooks/useDebounceLastCall.js';
 
 export default function BouquetsPage() {
-  const { bouquets, isLoading } = useGetBouquets();
+  const { bouquets, isLoading, error } = useGetBouquets();
   const debouncedSearch = useDebounceLastCall(updateSearchTerm, 500);
+
+  const isLoaded = useMemo(
+    () => bouquets.length > 0 && !isLoading && !error,
+    [bouquets, isLoading, error],
+  );
 
   const priceFilterRange = useMemo(() => {
     if (bouquets.length == 0) {
@@ -96,9 +101,9 @@ export default function BouquetsPage() {
 
       {/* Bouquet List */}
       <Grid item xs={12}>
-        {isLoading === 'loaded' && <BouquetList bouquets={filteredBouquets} />}
-        <Loading loading={isLoading === 'loading'} size={100} />
-        {isLoading === 'error' && (
+        {isLoaded && <BouquetList bouquets={filteredBouquets} />}
+        <Loading loading={isLoading} size={100} />
+        {error && (
           <div>Error loading bouquets. Reload page or try again later.</div>
         )}
       </Grid>

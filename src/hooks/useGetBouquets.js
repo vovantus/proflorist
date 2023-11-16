@@ -3,23 +3,26 @@ import { useEffect, useState } from 'react';
 
 export function useGetBouquets() {
   const [bouquets, setBouquets] = useState([]);
-  const [isLoading, setIsLoading] = useState('loading');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     api
       .fetchBouquets()
       .then((bouqs) => {
         setBouquets(bouqs);
-        setIsLoading('loaded');
+        setIsLoading(false);
       })
       .catch((e) => {
         console.log(e);
-        setIsLoading('error');
+        setIsLoading(false);
+        setError(e.name);
       });
   }, []);
 
   return {
     bouquets,
     isLoading,
+    error,
   };
 }

@@ -1,15 +1,12 @@
 import { CircularProgress } from '@mui/material';
+import cn from 'classnames';
 
 const Loading = ({ loading, size, color, style }) => {
   return (
     <>
       {loading && (
-        <div className={['loadingIndicatorContainer' + ' ' + style]}>
-          <CircularProgress
-            disableShrink
-            size={size ? size : 30}
-            color={color}
-          />
+        <div className={cn('loadingIndicatorContainer', style)}>
+          <CircularProgress disableShrink size={size || 30} color={color} />
         </div>
       )}
     </>
