@@ -100,12 +100,13 @@ export default function AddBouquet() {
     setButtonActive(false);
 
     if (!verifyFields(bouquet)) {
-      setButtonActive(true);
+      setButtonActiveDelayed(true);
       return;
     }
 
     try {
       const imageUrl = await uploadImage();
+
       const data = {
         Name: bouquet.name,
         Price: bouquet.price,
@@ -119,7 +120,7 @@ export default function AddBouquet() {
       setBouquet({ name: '', price: '', description: '' });
       navigate(URLS.ADMIN);
     } catch (error) {
-      setButtonActive(true);
+      setButtonActiveDelayed(true);
       setFormError(
         'Something went wrong, please reload the page and try again',
       );
@@ -138,8 +139,12 @@ export default function AddBouquet() {
       return info.href;
     } catch (error) {
       console.error(error);
-      setButtonActive(true);
-      setFormError('Image upload error, please upload a new one');
+      setButtonActiveDelayed(true);
+      setErrorFields((errorFields) => {
+        const newFields = new Map(errorFields);
+        newFields.set('image', 'Image error, please upload another one');
+        return newFields;
+      });
       throw error;
     }
   };
@@ -147,7 +152,7 @@ export default function AddBouquet() {
   const setImageAndActivateButton = (image) => {
     setImage(image);
     setImageUrl(URL.createObjectURL(image));
-    setButtonActive(true);
+    setButtonActiveDelayed(true);
   };
 
   const handleAddImageClick = () => {

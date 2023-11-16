@@ -153,7 +153,7 @@ const ImageCropper = ({ open, onClose, setImage }) => {
               cropBoxResizable={true}
               toggleDragModeOnDblclick={false}
               zoomOnWheel={true}
-              guides={false}
+              guides={true}
               onInitialized={(instance) => {
                 setCropper(instance);
                 setLoading(false);
