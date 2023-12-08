@@ -11,6 +11,8 @@ import '@fontsource/roboto/700.css';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { AppBarProvider } from './contexts/AppBarContext';
 import AppWrapper from './components/AppWrapper';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 const router = createHashRouter([
   {
@@ -22,11 +24,13 @@ const router = createHashRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppBarProvider>
-      <AppWrapper>
-        <RouterProvider router={router} />
-      </AppWrapper>
-    </AppBarProvider>
+    <Provider store={store}>
+      <AppBarProvider>
+        <AppWrapper>
+          <RouterProvider router={router} />
+        </AppWrapper>
+      </AppBarProvider>
+    </Provider>
   </React.StrictMode>,
 );
 

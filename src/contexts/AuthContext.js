@@ -2,6 +2,9 @@ import { createContext, useContext, useMemo } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router';
 
+import { updateUser } from '../features/userInfo/userInfoSlice';
+import { useDispatch } from 'react-redux';
+
 import api from '../api/api';
 import URLS from '../routes/urls';
 
@@ -14,6 +17,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginUser = (email, password) => {
     return api
@@ -22,6 +26,14 @@ export function AuthProvider({ children }) {
         return api.getAccount();
       })
       .then((user) => {
+        dispatch(
+          updateUser({
+            isAuthenticated: true,
+            email: user.email,
+            name: user.name,
+          }),
+        );
+
         setUser(user);
         navigate(URLS.ADMIN);
       })

@@ -8,6 +8,7 @@ import Link from '@mui/material/Link';
 import { useAppBar } from '../contexts/AppBarContext';
 import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { UserInfo } from '../features/userInfo/UserInfo';
 
 import URLS from '../routes/urls';
 import { useAuth } from '../contexts/AuthContext';
@@ -84,6 +85,7 @@ function AppHeader() {
                 <Button variant="contained" onClick={logOut}>
                   Logout
                 </Button>
+                <UserInfo />
               </div>
             ) : (
               <Typography
