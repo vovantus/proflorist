@@ -4,7 +4,6 @@ import { logoutUser } from './userInfoSlice';
 export function UserInfo() {
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
-  console.log(userInfo);
   return (
     userInfo.isAuthenticated && (
       <div>

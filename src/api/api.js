@@ -114,6 +114,20 @@ const api = {
       throw e;
     }
   },
+  // for rtk query
+  fetchBouquetsService: async () => {
+    try {
+      const data = await api.listDocuments(
+        Server.databaseID,
+        Server.collectionID,
+      );
+      console.log('api call', data.documents);
+      return { data: data.documents };
+    } catch (e) {
+      console.log('error', e);
+      return { error: e };
+    }
+  },
 
   fetchBouquetInfo: async (bouquetID) => {
     try {

@@ -12,10 +12,10 @@ export const userInfoSlice = createSlice({
   reducers: {
     updateUser: (state, action) => {
       // TODO check payload if it has nessesary fields
-      return { ...state, ...action.payload };
+      return action.payload;
     },
-    logoutUser: (state) => {
-      return { ...state, ...initialState };
+    logoutUser: () => {
+      return initialState;
     },
   },
 });
