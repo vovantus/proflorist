@@ -114,6 +114,16 @@ const api = {
       throw e;
     }
   },
+  // for rtk query
+  fetchBouquetsRTK: async () => {
+    try {
+      const data = await api.fetchBouquets();
+      return { data: data };
+    } catch (e) {
+      console.log('error', e);
+      return { error: e };
+    }
+  },
 
   fetchBouquetInfo: async (bouquetID) => {
     try {

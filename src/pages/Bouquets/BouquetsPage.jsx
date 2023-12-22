@@ -4,7 +4,7 @@ import {
   compareBouquets,
   getMinMaxBouquetPrices,
 } from '../../utils/utils.js';
-import { useGetBouquets } from '../../hooks/useGetBouquets';
+//import { useGetBouquets } from '../../hooks/useGetBouquets';
 import { Grid } from '@mui/material';
 import SortingBar from './SortingBar';
 import FilterBar from '../../components/FilterBar';
@@ -13,24 +13,37 @@ import SearchBar from '../../components/SearchBar';
 import BouquetList from './BouquetList';
 import CreateBouquetButton from '../../components/CreateBouquetButton.jsx';
 import { useDebounceLastCall } from '../../hooks/useDebounceLastCall.js';
+import { useGetBouquetsListQuery } from '../../services/bouquets.js';
 
 export default function BouquetsPage() {
-  const { bouquets, isLoading, error } = useGetBouquets();
-  const debouncedSearch = useDebounceLastCall(updateSearchTerm, 500);
+  //const { bouquets, isLoading, error } = useGetBouquets();
+  //   const isLoaded = useMemo(
+  //     () => bouquets.length > 0 && !isLoading && !error,
+  //     [bouquets, isLoading, error],
+  //   );
 
-  const isLoaded = useMemo(
-    () => bouquets.length > 0 && !isLoading && !error,
-    [bouquets, isLoading, error],
-  );
+  //   const priceFilterRange = useMemo(() => {
+  //     if (bouquets.length == 0) {
+  //       return [0, 0];
+  //     } else {
+  //       const filterInitial = getMinMaxBouquetPrices(bouquets);
+  //       return [filterInitial[0] - 1, filterInitial[1] + 1];
+  //     }
+  //   }, [bouquets]);
 
+  const { data, isLoading, error } = useGetBouquetsListQuery();
+  console.log(data);
+  const isLoaded = useMemo(() => !isLoading, [isLoading]);
   const priceFilterRange = useMemo(() => {
-    if (bouquets.length == 0) {
+    if (!data) {
       return [0, 0];
     } else {
-      const filterInitial = getMinMaxBouquetPrices(bouquets);
+      const filterInitial = getMinMaxBouquetPrices(data);
       return [filterInitial[0] - 1, filterInitial[1] + 1];
     }
-  }, [bouquets]);
+  }, [data]);
+
+  const debouncedSearch = useDebounceLastCall(updateSearchTerm, 500);
 
   const [priceFilterSelection, setPriceFilterSelection] = useState([0, 0]);
   const [sorting, setSorting] = useState({ field: 'Name', direction: 'asc' });
@@ -41,11 +54,15 @@ export default function BouquetsPage() {
   }, [priceFilterRange]);
 
   const sortedBouquets = useMemo(() => {
-    const sorted = bouquets.sort((a, b) =>
-      compareBouquets(a, b, sorting.field, sorting.direction),
-    );
-    return [...sorted]; // без этого не обновляет filteredBouquets
-  }, [bouquets, sorting]);
+    if (data) {
+      const sorted = [...data].sort((a, b) =>
+        compareBouquets(a, b, sorting.field, sorting.direction),
+      );
+      return [...sorted];
+    } else {
+      return [];
+    } // без этого не обновляет filteredBouquets
+  }, [data, sorting]);
 
   const filteredBouquets = useMemo(
     () =>
