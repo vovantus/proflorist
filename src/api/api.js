@@ -115,14 +115,10 @@ const api = {
     }
   },
   // for rtk query
-  fetchBouquetsService: async () => {
+  fetchBouquetsRTK: async () => {
     try {
-      const data = await api.listDocuments(
-        Server.databaseID,
-        Server.collectionID,
-      );
-      console.log('api call', data.documents);
-      return { data: data.documents };
+      const data = await api.fetchBouquets();
+      return { data: data };
     } catch (e) {
       console.log('error', e);
       return { error: e };

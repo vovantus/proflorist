@@ -10,7 +10,7 @@ export const bouquetsApi = createApi({
     getBouquetsList: build.query({
       queryFn: async () => {
         try {
-          const bouquets = await api.fetchBouquetsService();
+          const bouquets = await api.fetchBouquetsRTK();
           // Return the result in an object with a `data` field
           return { data: bouquets.data };
         } catch (error) {
